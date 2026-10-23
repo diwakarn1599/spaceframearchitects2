@@ -1,0 +1,13 @@
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <rect width="64" height="64" rx="12" fill="#2b2f36"/>
+  <g transform="translate(2 5.8) scale(0.1055)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Gold: main building -->
+    <path d="M100 457 V187 L373 40 V457 Z" stroke="#c9a93a" stroke-width="22"/>
+    <!-- Light: inner door -->
+    <path d="M208 457 V253 L290 209 V457" stroke="#f2f2f2" stroke-width="20"/>
+    <!-- Light: stepped panels -->
+    <path d="M373 72 L405 54 V457" stroke="#f2f2f2" stroke-width="14"/>
+    <path d="M405 86 L432 68 V457" stroke="#f2f2f2" stroke-width="14"/>
+    <path d="M432 106 L468 88 V457" stroke="#f2f2f2" stroke-width="14"/>
+  </g>
+</svg>
