@@ -395,7 +395,6 @@
       .from('.hero__eyebrow', { opacity: 0, x: -24 }, 0.6)
       .from(split.targets, { yPercent: 110, stagger: 0.09, onComplete: () => restore(title, split.original) }, 0.7)
       .from(['.hero__subtitle', ...$$('.hero__btns .btn')], { opacity: 0, y: 20, stagger: 0.08 }, 1)
-      .from('.annot-lines path', { opacity: 0, duration: 1 }, 1)
       .from('.hero__scroll', { opacity: 0, duration: 1 }, 1.3);
     if (isPhone) tl.from('.hero__frame', { opacity: 0, scale: 0.82, y: 30, duration: 2.4, ease: 'expo.out' }, 0);
 
@@ -444,8 +443,7 @@
         .to('.hero__brand', { opacity: 0, duration: 0.55 }, 0.3)
         .to('.hero__eyebrow', { opacity: 0, duration: 0.3 }, 0)
         .to(['.hero__bottom'], { y: -60, opacity: 0, duration: 0.6 }, 0.25)
-        .to('.hero__scroll', { opacity: 0, duration: 0.2 }, 0)
-        .to('.annot-lines', { opacity: 0, duration: 0.4 }, 0.4);
+        .to('.hero__scroll', { opacity: 0, duration: 0.2 }, 0);
       return () => frame && frame.setProgress(0);
     });
     mm.add('(max-width: 1023px)', () => {
