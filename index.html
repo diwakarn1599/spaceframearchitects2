@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,300;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300..600&family=IBM+Plex+Mono:wght@400;500&display=swap" />
-<link rel="preload" as="image" href="assets/img/works/opt-3-1920.jpg" media="(min-width: 1024px)" />
+<link rel="preload" as="image" href="assets/img/works/jeeva-1440.jpg" media="(min-width: 1024px)" />
 <link rel="preload" as="image" href="assets/img/works/opt-3-960.jpg" media="(min-width: 768px) and (max-width: 1023px)" />
 <link rel="stylesheet" href="css/main.css" />
 
@@ -183,10 +183,19 @@
           <!-- Phones use the drafting-sheet hero (no photo): a 1px transparent GIF stops the download -->
           <source media="(max-width: 767px)" srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" />
           <source media="(max-width: 1023px)" srcset="assets/img/works/opt-3-960.jpg" />
-          <img class="hero__img" src="assets/img/works/opt-3-1920.jpg" alt="Dusk view of a contemporary residence with a brick-clad angled facade and planted balcony" width="1691" height="930" fetchpriority="high" />
+          <img class="hero__img" src="assets/img/works/opt-3-1920.jpg" alt="Dusk view of a contemporary residence with a brick-clad angled facade and planted balcony" width="1691" height="930" decoding="async" />
         </picture>
         <div class="hero__shade" aria-hidden="true"></div>
       </div>
+
+      <!-- Desktop: the small frame shows its own, properly framed image; scrolling expands to the photo above -->
+      <figure class="hero__card">
+        <picture>
+          <source media="(max-width: 1023px)" srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" />
+          <img src="assets/img/works/jeeva-1440.jpg" srcset="assets/img/works/jeeva-960.jpg 960w, assets/img/works/jeeva-1440.jpg 1440w" sizes="44vw" alt="Dusk view of a narrow contemporary residence with a tall textured facade and a dark framed balcony" width="1440" height="1017" fetchpriority="high" />
+        </picture>
+        <span class="hero__card-shade" aria-hidden="true"></span>
+      </figure>
 
       <svg class="hero__annot" viewBox="0 0 1440 900" preserveAspectRatio="none" aria-hidden="true">
         <g class="annot-lines">

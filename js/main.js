@@ -356,8 +356,15 @@
     const tl = gsap.timeline({ defaults: { duration: 1.5 } });
     html.classList.add('hero-in');
     const isPhone = window.matchMedia('(max-width: 767px)').matches;
-    tl.from('.hero__window', { clipPath: isDesk ? 'inset(15% 5% 22% 95%)' : 'inset(100% 0% 0% 0%)', duration: 1.6, ease: 'expo.inOut' }, 0)
-      .from('.hero__img', { scale: 1.4, duration: 2.2 }, 0)
+    if (isDesk) {
+      // Desktop: the small frame opens like a blind onto its own image
+      tl.from('.hero__card', { clipPath: 'inset(0% 0% 100% 0%)', duration: 1.6, ease: 'expo.inOut' }, 0)
+        .from('.hero__card img', { scale: 1.35, duration: 2.4 }, 0);
+    } else {
+      tl.from('.hero__window', { clipPath: 'inset(100% 0% 0% 0%)', duration: 1.6, ease: 'expo.inOut' }, 0)
+        .from('.hero__img', { scale: 1.4, duration: 2.2 }, 0);
+    }
+    tl
       .from('.hb-word', { yPercent: 108, stagger: 0.12, duration: 1.4, ease: 'expo.out' }, 0.35)
       .from('.hero__eyebrow', { opacity: 0, x: -24 }, 0.6)
       .from(split.targets, { yPercent: 110, stagger: 0.09, onComplete: () => restore(title, split.original) }, 0.7)
@@ -397,8 +404,13 @@
           onUpdate: (self) => frame && frame.setProgress(self.progress),
         },
       });
-      tl.to('.hero__window', { clipPath: 'inset(0% 0% 0% 0%)' }, 0)
+      // Two images: the small frame's photo cross-fades away while a second, full-bleed
+      // photograph grows out from the same frame to fill the screen.
+      tl.to('.hero__window', { opacity: 1, duration: 0.04 }, 0)
+        .to('.hero__window', { clipPath: 'inset(0% 0% 0% 0%)' }, 0)
         .to('.hero__img', { scale: 1 }, 0)
+        .to('.hero__card', { opacity: 0, scale: 1.1, duration: 0.42, ease: 'power1.in' }, 0.04)
+        .to('.hero__card img', { scale: 1.2, duration: 0.42 }, 0.04)
         // The three lines slide apart in alternating directions as the photograph opens
         .to('.hero__brand-row:nth-child(1)', { xPercent: -14, duration: 0.8 }, 0.08)
         .to('.hero__brand-row:nth-child(2)', { xPercent: 12, duration: 0.8 }, 0.08)

@@ -62,10 +62,7 @@ tools/serve.ps1         Tiny static server for Windows
   drop in from −50px on their own delays, then the rule and wordmark appear. The sheet then
   lifts away and the home page animates in. It runs on every page load (about 4 seconds),
   can be skipped with "Skip intro" or Escape, and is never shown with reduced motion.
-- **Hero** – oversized display type over a framed photograph, with an animated 3D
-  space-frame lattice (an octet truss in perspective, following the pointer). On desktop
-  the hero pins: scrolling widens the frame to a full-bleed image while the type lifts
-  away and the lattice camera pulls in.
+- **Hero** – oversized display type beside a small framed photograph (JEEVA render) and an animated 3D space-frame lattice following the pointer. On desktop the hero pins: scrolling cross-fades the small photo away while a second, full-bleed photograph (opt 3) grows out of the same frame to fill the screen, the type lifts away and the lattice camera pulls in.
 - **Our Story (About)**:
   - **Structural column grid:** dash-dot centre lines with grid bubbles A–E and 1–3, as on a structural plan. It assembles on entry and drifts slower than the content. A "drafting lamp" shows fine graph paper around the pointer.
   - **Headline:** the characters flip up in 3D. The italic "Breathes & Endures" line opens out and then settles as you scroll.
