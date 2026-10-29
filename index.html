@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,300;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300..600&family=IBM+Plex+Mono:wght@400;500&display=swap" />
-<link rel="preload" as="image" href="assets/img/works/jeeva-1440.jpg" media="(min-width: 1024px)" />
+<link rel="preload" as="image" href="assets/img/works/opt-3-1920.jpg" media="(min-width: 1024px)" />
 <link rel="preload" as="image" href="assets/img/works/opt-3-960.jpg" media="(min-width: 768px) and (max-width: 1023px)" />
 <link rel="stylesheet" href="css/main.css" />
 
@@ -183,19 +183,109 @@
           <!-- Phones use the drafting-sheet hero (no photo): a 1px transparent GIF stops the download -->
           <source media="(max-width: 767px)" srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" />
           <source media="(max-width: 1023px)" srcset="assets/img/works/opt-3-960.jpg" />
-          <img class="hero__img" src="assets/img/works/opt-3-1920.jpg" alt="Dusk view of a contemporary residence with a brick-clad angled facade and planted balcony" width="1691" height="930" decoding="async" />
+          <img class="hero__img" src="assets/img/works/opt-3-1920.jpg" alt="Dusk view of a contemporary residence with a brick-clad angled facade and planted balcony" width="1920" height="1056" decoding="async" />
         </picture>
         <div class="hero__shade" aria-hidden="true"></div>
       </div>
 
-      <!-- Desktop: the small frame shows its own, properly framed image; scrolling expands to the photo above -->
+      <!-- Desktop: before scrolling, the frame holds a live elevation drawing of the house in the
+           hero photograph. It draws itself, then lights up at dusk; scrolling cross-fades it into
+           the real photograph ("concept to completion"). Illustrative only. -->
       <figure class="hero__card">
-        <picture>
-          <source media="(max-width: 1023px)" srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" />
-          <img src="assets/img/works/jeeva-1440.jpg" srcset="assets/img/works/jeeva-960.jpg 960w, assets/img/works/jeeva-1440.jpg 1440w" sizes="44vw" alt="Dusk view of a narrow contemporary residence with a tall textured facade and a dark framed balcony" width="1440" height="1017" fetchpriority="high" />
-        </picture>
-        <span class="hero__card-shade" aria-hidden="true"></span>
+        <svg class="hero__sketch" viewBox="0 0 600 560" role="img" aria-label="Animated architect's elevation drawing of a contemporary house whose windows light up at dusk">
+          <defs>
+            <pattern id="sk-grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0 H0 V20" fill="none" stroke="rgba(201,169,58,.09)" stroke-width="1" /></pattern>
+            <pattern id="sk-brick" width="16" height="8" patternUnits="userSpaceOnUse"><path d="M0 7.5 H16 M4 0 V7.5 M12 0 V3.5" fill="none" stroke="rgba(201,169,58,.38)" stroke-width=".7" /></pattern>
+            <linearGradient id="sk-warm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd98c" /><stop offset="1" stop-color="#d98a2b" /></linearGradient>
+            <radialGradient id="sk-halo"><stop offset="0" stop-color="rgba(255,214,130,.85)" /><stop offset="1" stop-color="rgba(255,214,130,0)" /></radialGradient>
+          </defs>
+
+          <rect class="sk-sheet" x="0" y="0" width="600" height="560" fill="url(#sk-grid)" />
+
+          <!-- glows behind the line work (lights on) -->
+          <g class="sk-light">
+            <rect x="241" y="241" width="68" height="58" fill="url(#sk-warm)" opacity=".55" />
+            <rect x="317" y="206" width="60" height="85" fill="url(#sk-warm)" />
+            <rect x="249" y="353" width="190" height="66" fill="url(#sk-warm)" opacity=".5" />
+            <rect x="263" y="381" width="36" height="88" fill="url(#sk-warm)" />
+            <rect x="301" y="381" width="34" height="38" fill="url(#sk-warm)" />
+          </g>
+          <g class="sk-halo">
+            <circle cx="423" cy="222" r="34" fill="url(#sk-halo)" />
+            <circle cx="530" cy="301" r="46" fill="url(#sk-halo)" />
+            <circle cx="70" cy="472" r="22" fill="url(#sk-halo)" />
+            <circle cx="120" cy="472" r="22" fill="url(#sk-halo)" />
+            <circle cx="170" cy="472" r="22" fill="url(#sk-halo)" />
+            <circle cx="234" cy="420" r="26" fill="url(#sk-halo)" />
+            <circle cx="462" cy="420" r="26" fill="url(#sk-halo)" />
+          </g>
+
+          <!-- brick hatch (fades in) -->
+          <path class="sk-hatch" d="M300 178 L455 60 L455 340 L392 340 L392 176 L300 176 Z" fill="url(#sk-brick)" />
+
+          <!-- ground & street -->
+          <g class="sk-draw sk-ground">
+            <path pathLength="1" d="M0 495 H600" />
+            <path pathLength="1" d="M0 515 H600" />
+          </g>
+
+          <!-- vegetation (soft) -->
+          <g class="sk-draw sk-veg">
+            <path pathLength="1" d="M42 495 V330 M42 370 L18 340 M42 400 L68 362" />
+            <path pathLength="1" d="M-6 330 C-20 290 6 250 36 252 C46 214 96 214 108 250 C140 254 146 300 120 318 C116 350 70 360 48 342 C22 360 -8 352 -6 330 Z" />
+            <path pathLength="1" d="M528 495 V372 M528 410 L506 386 M528 430 L552 400" />
+            <path pathLength="1" d="M486 372 C470 342 494 310 520 318 C530 290 572 292 580 322 C606 328 606 368 584 378 C578 402 540 404 528 388 C506 402 480 394 486 372 Z" />
+            <path pathLength="1" d="M248 300 q6 -16 12 -2 q4 -18 12 -1 q6 -16 12 0 q5 -18 12 -1 q6 -14 12 0 q4 -18 12 -2 q6 -16 12 0 q5 -16 12 -1 q6 -16 12 1 q5 -14 10 2" />
+            <path pathLength="1" d="M48 455 q8 -22 16 -2 q6 -24 16 -2 q8 -20 16 0 q6 -24 16 -1 q8 -20 16 0 q6 -22 16 -2 q8 -20 16 2 q6 -18 14 4" />
+          </g>
+
+          <!-- main massing -->
+          <g class="sk-draw sk-mass">
+            <rect pathLength="1" x="60" y="70" width="176" height="425" />
+            <path pathLength="1" d="M236 140 H360 V152 H236" />
+            <path pathLength="1" d="M300 178 L455 60" />
+            <rect pathLength="1" x="455" y="52" width="13" height="443" />
+            <rect pathLength="1" x="228" y="176" width="164" height="154" />
+            <rect pathLength="1" x="240" y="188" width="140" height="112" />
+            <rect pathLength="1" x="228" y="340" width="228" height="12" />
+            <rect pathLength="1" x="236" y="352" width="12" height="143" />
+            <rect pathLength="1" x="20" y="455" width="208" height="40" />
+            <rect pathLength="1" x="468" y="455" width="117" height="40" />
+          </g>
+
+          <!-- openings & details -->
+          <g class="sk-draw sk-detail">
+            <path pathLength="1" d="M246 188 V240 M252 188 V240 M258 188 V240 M264 188 V240 M270 188 V240 M276 188 V240 M282 188 V240 M288 188 V240 M294 188 V240 M300 188 V240 M306 188 V240 M240 240 H312" />
+            <rect pathLength="1" x="316" y="205" width="62" height="87" />
+            <path pathLength="1" d="M347 205 V292 M316 228 H378" />
+            <rect pathLength="1" x="262" y="380" width="38" height="90" />
+            <rect pathLength="1" x="300" y="380" width="36" height="40" />
+            <path pathLength="1" d="M318 380 V420" />
+            <rect pathLength="1" x="340" y="420" width="112" height="75" />
+            <path pathLength="1" d="M340 428 H452 M340 436 H452 M340 444 H452 M340 452 H452 M340 460 H452 M340 468 H452 M340 476 H452 M340 484 H452 M396 420 V495" />
+            <rect pathLength="1" x="420" y="214" width="6" height="15" />
+            <path pathLength="1" d="M548 495 V298 H528 M524 298 H536 V304 H524 Z" />
+            <path pathLength="1" d="M0 535 H40 M70 535 H110 M140 535 H180 M210 535 H250 M280 535 H320 M350 535 H390 M420 535 H460 M490 535 H530 M560 535 H600" />
+          </g>
+
+          <!-- dimensions & levels -->
+          <g class="sk-draw sk-dim">
+            <path pathLength="1" d="M60 548 H468 M60 542 V554 M468 542 V554" />
+            <path pathLength="1" d="M28 70 V495 M22 70 H34 M22 495 H34" />
+            <path pathLength="1" d="M478 495 H500 M478 340 H500 M478 176 H500 M478 60 H500" />
+            <path pathLength="1" d="M482 489 L488 495 L494 489 Z M482 334 L488 340 L494 334 Z M482 170 L488 176 L494 170 Z M482 54 L488 60 L494 54 Z" />
+          </g>
+          <g class="sk-text">
+            <text x="20" y="26">Elevation · Concept</text>
+            <text x="580" y="26" text-anchor="end">Space Frame Architects</text>
+            <text x="504" y="498">LVL 00</text>
+            <text x="504" y="343">LVL 01</text>
+            <text x="504" y="179">LVL 02</text>
+            <text x="504" y="63">Roof</text>
+          </g>
+        </svg>
       </figure>
+
 
       <svg class="hero__annot" viewBox="0 0 1440 900" preserveAspectRatio="none" aria-hidden="true">
         <g class="annot-lines">
@@ -501,28 +591,72 @@
 
   <!-- ── GALLERY ───────────────────────────────────────────────────── -->
   <section class="gallery" id="gallery" data-nav="light">
+    <div class="gallery__bg" aria-hidden="true"><span class="gallery__bgword">Gallery</span></div>
     <div class="wrap">
       <header class="sec-head gallery__head">
         <div>
           <p class="sec-label mono" data-reveal><span>04</span> A Closer Look</p>
           <h2 class="sec-title" data-split="lines">Project Gallery</h2>
         </div>
-        <div class="gallery__tabs" role="tablist" aria-label="Gallery categories">
-          <button class="gtab is-active" role="tab" id="tab-construction" aria-selected="true" aria-controls="panel-gallery" data-cat="construction" type="button">
-            <span class="gtab__name">Construction</span><span class="gtab__count mono" id="construction-count"></span>
-          </button>
-          <button class="gtab" role="tab" id="tab-interior" aria-selected="false" aria-controls="panel-gallery" data-cat="interior" type="button" tabindex="-1">
-            <span class="gtab__name">Interior</span><span class="gtab__count mono" id="interior-count"></span>
-          </button>
+        <div class="gallery__controls">
+          <div class="gallery__tabs" role="tablist" aria-label="Gallery categories">
+            <span class="gtab__ink" aria-hidden="true"></span>
+            <button class="gtab is-active" role="tab" id="tab-all" aria-selected="true" aria-controls="panel-gallery" data-cat="all" type="button">
+              <span class="gtab__name">All</span><span class="gtab__count mono" id="all-count"></span>
+            </button>
+            <button class="gtab" role="tab" id="tab-construction" aria-selected="false" aria-controls="panel-gallery" data-cat="construction" type="button" tabindex="-1">
+              <span class="gtab__name">Construction</span><span class="gtab__count mono" id="construction-count"></span>
+            </button>
+            <button class="gtab" role="tab" id="tab-interior" aria-selected="false" aria-controls="panel-gallery" data-cat="interior" type="button" tabindex="-1">
+              <span class="gtab__name">Interior</span><span class="gtab__count mono" id="interior-count"></span>
+            </button>
+          </div>
+          <div class="gview" role="group" aria-label="Gallery layout">
+            <button type="button" class="gview__btn is-active" data-view="grid" aria-pressed="true">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2" y="2" width="9" height="9" /><rect x="13" y="2" width="5" height="5" /><rect x="13" y="9" width="5" height="9" /><rect x="2" y="13" width="9" height="5" /></svg>
+              <span class="mono">Grid</span>
+            </button>
+            <button type="button" class="gview__btn" data-view="film" aria-pressed="false">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="1" y="5" width="5" height="10" /><rect x="7.5" y="4" width="5" height="12" /><rect x="14" y="5" width="5" height="10" /></svg>
+              <span class="mono">Film</span>
+            </button>
+          </div>
         </div>
       </header>
 
-      <div class="gallery__panel" id="panel-gallery" role="tabpanel" aria-labelledby="tab-construction">
-        <div class="masonry" id="masonry"></div>
+      <div class="gsheet mono" aria-hidden="true">
+        <span>Sheet 04</span><span class="gsheet__rule"></span>
+        <span id="gsheet-cat">All</span><span>·</span><span id="gsheet-count"></span>
+        <span class="gsheet__hint">Select a photo to open</span>
+      </div>
+
+      <div class="gallery__panel" id="panel-gallery" role="tabpanel" aria-labelledby="tab-all">
+        <!-- Grid view: a collapsible bento "contact sheet" -->
+        <div class="gbox" id="gbox">
+          <div class="bento" id="bento"></div>
+          <div class="gbox__fade" aria-hidden="true"></div>
+        </div>
+        <div class="gbox__actions">
+          <button class="gexpand" id="gallery-more" type="button" aria-expanded="false" aria-controls="gbox">
+            <span class="gexpand__icon" aria-hidden="true"><span></span><span></span></span>
+            <span class="gexpand__label">Expand gallery</span>
+            <span class="gexpand__count mono" id="gexpand-count"></span>
+          </button>
+        </div>
+
+        <!-- Film view: a horizontal strip -->
+        <div class="gfilm" id="gfilm" hidden>
+          <div class="gfilm__track" id="gfilm-track" tabindex="0" aria-label="Photo strip, scroll horizontally"></div>
+          <div class="gfilm__nav">
+            <button type="button" class="vbtn" id="gfilm-prev" aria-label="Scroll strip left"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 L8 12 L15 19" /></svg></button>
+            <span class="gfilm__bar" aria-hidden="true"><span id="gfilm-bar"></span></span>
+            <button type="button" class="vbtn" id="gfilm-next" aria-label="Scroll strip right"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5 L16 12 L9 19" /></svg></button>
+          </div>
+        </div>
+
         <noscript>
           <p class="gallery__noscript">Enable JavaScript to browse the project gallery.</p>
         </noscript>
-        <div class="gallery__more"><button class="btn btn--line magnetic" id="gallery-more" type="button" hidden><span>View all photos</span></button></div>
         <p class="gallery__status" id="gallery-status" role="status" aria-live="polite"></p>
       </div>
     </div>
@@ -741,13 +875,24 @@
   <div class="lightbox__top">
     <span class="lightbox__cat mono" id="lb-cat"></span>
     <span class="lightbox__count mono" id="lb-count" aria-live="polite"></span>
-    <button type="button" class="lightbox__close" id="lb-close"><span>Close</span><span class="x" aria-hidden="true"></span></button>
+    <div class="lightbox__tools">
+      <button type="button" class="lbtool" id="lb-play" aria-pressed="false" aria-label="Play slideshow">
+        <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5 L19 12 L8 19 Z" /></svg>
+        <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5 V19 M16 5 V19" /></svg>
+      </button>
+      <button type="button" class="lbtool" id="lb-zoom" aria-pressed="false" aria-label="Zoom in">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="M15.5 15.5 L21 21 M10.5 7.5 V13.5 M7.5 10.5 H13.5" /></svg>
+      </button>
+      <button type="button" class="lightbox__close" id="lb-close"><span>Close</span><span class="x" aria-hidden="true"></span></button>
+    </div>
   </div>
+  <div class="lightbox__progress" aria-hidden="true"><span id="lb-progress"></span></div>
   <div class="lightbox__stage" id="lb-stage">
-    <img class="lightbox__img" id="lb-img" src="" alt="" />
+    <div class="lightbox__frame" id="lb-frame"><img class="lightbox__img" id="lb-img" src="" alt="" /></div>
   </div>
   <button type="button" class="lightbox__nav lightbox__nav--prev" id="lb-prev" aria-label="Previous photo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 L8 12 L15 19" /></svg></button>
   <button type="button" class="lightbox__nav lightbox__nav--next" id="lb-next" aria-label="Next photo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5 L16 12 L9 19" /></svg></button>
+  <div class="lightbox__thumbs" id="lb-thumbs" role="group" aria-label="All photos"></div>
 </div>
 
 <script src="js/vendor/gsap.min.js"></script>

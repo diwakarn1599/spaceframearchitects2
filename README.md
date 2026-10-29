@@ -62,7 +62,10 @@ tools/serve.ps1         Tiny static server for Windows
   drop in from −50px on their own delays, then the rule and wordmark appear. The sheet then
   lifts away and the home page animates in. It runs on every page load (about 4 seconds),
   can be skipped with "Skip intro" or Escape, and is never shown with reduced motion.
-- **Hero** – oversized display type beside a small framed photograph (JEEVA render) and an animated 3D space-frame lattice following the pointer. On desktop the hero pins: scrolling cross-fades the small photo away while a second, full-bleed photograph (opt 3) grows out of the same frame to fill the screen, the type lifts away and the lattice camera pulls in.
+- **Hero**: oversized display type sits beside a drafting sheet, with an animated 3D space-frame lattice behind that follows the pointer.
+  - **Opening drawing (desktop):** the sheet holds a live elevation drawing of the house in the hero photo. It draws itself in construction order (ground, massing, openings, planting, dimensions and level markers), then its windows and lamps light up for dusk. The layers shift with the pointer. The drawing is illustrative only.
+  - **On scroll:** the hero pins, the drawing fades while the real dusk photo grows out of the same frame to fill the screen, the type lifts away and the lattice camera pulls in. It reads as "concept to completion".
+  - **Photo:** the hero photo has had its house nameplate removed and has been enhanced: upscaled to 1920px, with gentle contrast, vibrance and sharpening.
 - **Our Story (About)**:
   - **Structural column grid:** dash-dot centre lines with grid bubbles A–E and 1–3, as on a structural plan. It assembles on entry and drifts slower than the content. A "drafting lamp" shows fine graph paper around the pointer.
   - **Headline:** the characters flip up in 3D. The italic "Breathes & Endures" line opens out and then settles as you scroll.
@@ -80,9 +83,12 @@ tools/serve.ps1         Tiny static server for Windows
   scales, perspective swing-in, inner image parallax, a progress rail and counter.
   Each project opens a full-screen case view (prev/next, Escape, focus return).
   Tablets and phones get a natural vertical layout.
-- **Gallery** – Construction/Interior tabs (arrow-key navigation), masonry layout
-  with clip reveals, "View all" expansion, and a lightbox with keyboard, swipe,
-  counter and preloading.
+- **Gallery**:
+  - **Tabs and views:** a "contact sheet" with All / Construction / Interior tabs (sliding ink bar, arrow-key navigation) and a Grid / Film layout switch.
+  - **Grid:** a bento layout that sizes each tile by the photo's orientation, with a large feature tile every seventh photo. It opens collapsed to about one screen with a fade, and the Expand / Collapse control animates the height. Photos below the fold are left out of keyboard focus while collapsed.
+  - **Film:** a horizontal strip with mouse drag, arrow buttons and a progress line.
+  - **Tiles:** hovering a tile zooms it, draws gold corner marks, shows a caption and a "+" button, and mutes the other tiles.
+  - **Lightbox:** a thumbnail strip, click-to-zoom with pointer panning, and a slideshow with a progress bar. Keys: ← → to move, Space/K to play or pause, Z to zoom, Esc to close. Swipe works on phones, and focus returns to the photo you opened.
 - **Testimonials**:
   - **Backdrop:** a perspective floor grid rolls toward you as you scroll, and the outlined words "Kind Words" drift sideways. Drafting lines draw in.
   - **Card:** each review sits on a "drawing sheet" with registration corners and a "Sheet 01 / 04" title block. The card stands up in 3D on entry and tilts with the pointer.
