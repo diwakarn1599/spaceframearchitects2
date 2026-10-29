@@ -104,6 +104,11 @@ tools/serve.ps1         Tiny static server for Windows
   section and hides on scroll down, a scroll progress line, magnetic buttons and a
   custom cursor on fine-pointer devices.
 
+## Interactive pieces (all devices)
+
+- **3D massing model** (`js/house3d.js`, in Services): a wireframe of the hero house (tall side wall, porch, cantilevered balcony box, sloped brick wing, fin). It builds up from the ground, turns slowly, and its windows light up. Drag with a finger or mouse (it has inertia), or focus it and use the arrow keys. It pauses when off screen.
+- **Crane caricature** (Contact): when the section comes into view, a tower crane lifts the ground floor, balcony box, roof slab and fin into place, the sun sets behind it, and the windows light up. Tap it to build it again. Both are illustrative only.
+
 ## Hero name
 
 "SPACE / FRAME / ARCHITECTS" is set as three lines at one size. `fitBrand()` in `js/main.js` solves each word's variable width axis (Archivo `wdth` 62–125) so all three lines end on the same edge. Short words also get letter-spacing to make up the rest. ARCHITECTS is gold. On load each word expands from fully condensed to its fitted width, and a light sweeps across ARCHITECTS. A dimension line then draws under the block. On desktop the three lines drift with the pointer and slide apart in alternating directions as the hero photo opens on scroll. The fit is recalculated on resize.

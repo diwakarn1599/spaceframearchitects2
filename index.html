@@ -289,6 +289,7 @@
 
       <div class="hero__content">
         <p class="hero__eyebrow mono"><span class="hero__tick" aria-hidden="true"></span>Chennai · Est. 2015</p>
+        <div class="hero__mstage"></div>
         <div class="hero__mdim" aria-hidden="true"><span class="mono">Space frame · Axonometric</span></div>
         <h2 class="hero__brand" aria-label="Space Frame Architects">
           <span class="hero__brand-row" aria-hidden="true"><span class="hb-word">Space</span></span>
@@ -400,6 +401,12 @@
           <p class="sec-label mono" data-reveal><span>02</span> What We Do</p>
           <h2 class="sec-title" data-split="lines">Our Expertise</h2>
         </header>
+
+        <figure class="model" data-reveal>
+          <canvas class="model__canvas" tabindex="0" role="img" aria-label="Interactive 3D massing model of a contemporary house. Drag, or use the arrow keys, to rotate it."></canvas>
+          <span class="model__tick model__tick--tl" aria-hidden="true"></span><span class="model__tick model__tick--br" aria-hidden="true"></span>
+          <figcaption class="model__cap mono"><span>Model 01 · Concept massing</span><span class="model__hint" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12 H20 M4 12 L8 8 M4 12 L8 16 M20 12 L16 8 M20 12 L16 16" /></svg>Drag to rotate</span></figcaption>
+        </figure>
 
         <div class="services__layout">
           <div class="services__list">
@@ -754,6 +761,11 @@
       <p class="sec-label mono" data-reveal><span>06</span> Get In Touch</p>
       <h2 class="contact__title" data-split="words">Let's Build Something<br /><em>Beautiful</em> Together</h2>
 
+      <figure class="build" aria-hidden="true">
+        <svg class="build__svg" viewBox="0 0 360 250"></svg>
+        <figcaption class="build__cap mono">Concept → Completion <span class="build__replay">· Tap to build again</span></figcaption>
+      </figure>
+
       <div class="contact__grid-info">
         <div class="cinfo" data-reveal>
           <span class="cinfo__label mono">Address</span>
@@ -845,6 +857,13 @@
   </div>
 </footer>
 
+<!-- ── PHONE QUICK ACTIONS ────────────────────────────────────────── -->
+<nav class="mdock" aria-label="Quick contact">
+  <a class="mdock__btn" href="tel:+916369402785"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4 H9 L10.5 8.5 L8.3 10 C9.3 12.2 11.8 14.7 14 15.7 L15.5 13.5 L20 15 V19 C20 19 17 21 12 16 C7 11 5 8 5 4 Z" /></svg><span>Call</span></a>
+  <a class="mdock__btn" href="https://wa.me/6369402785?text=Hi%20Space%20Frame%20Architects!%20I'm%20planning%20to%20build%20my%20dream%20home%20and%20would%20love%20to%20talk%20about%20where%20to%20start" target="_blank" rel="noopener" aria-label="WhatsApp (opens in a new tab)"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M8 15.5C9 16.5 11 17.5 14 16C17 14.5 17.5 11 16.5 9C15.5 7 13.5 6.5 12 7C11 7.3 10.5 8 11 9C11.5 10 12.5 10 12 11C11.5 12 10 12 9.5 13C9 14 9.5 15 10 15.5" /></svg><span>WhatsApp</span></a>
+  <a class="mdock__btn mdock__btn--cta" href="#contact"><span>Let's Talk</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12 H19 M13 6 L19 12 L13 18" /></svg></a>
+</nav>
+
 <!-- ── PROJECT CASE OVERLAY ───────────────────────────────────────── -->
 <div class="case" id="case" role="dialog" aria-modal="true" aria-labelledby="case-title" hidden>
   <div class="case__curtain" aria-hidden="true"></div>
@@ -892,6 +911,7 @@
 <script src="js/vendor/gsap.min.js"></script>
 <script src="js/vendor/ScrollTrigger.min.js"></script>
 <script src="js/frame3d.js"></script>
+<script src="js/house3d.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

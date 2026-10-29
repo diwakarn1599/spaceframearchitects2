@@ -356,9 +356,8 @@
     const tl = gsap.timeline({ defaults: { duration: 1.5 } });
     html.classList.add('hero-in');
     const isPhone = window.matchMedia('(max-width: 767px)').matches;
-    if (isDesk) {
-      // Desktop: the small frame opens like a blind onto its own image
-      // Desktop: the drafting sheet opens, then the elevation draws itself and lights up at dusk
+    if (isDesk || isPhone) {
+      // Desktop & phones: the drafting sheet opens, then the elevation draws itself and lights up at dusk
       const sk = (s) => $$('.hero__sketch ' + s);
       tl.from('.hero__card', { clipPath: 'inset(0% 0% 100% 0%)', duration: 1.4, ease: 'expo.inOut' }, 0)
         .to(sk('.sk-sheet'), { opacity: 1, duration: 1 }, 0.5)
@@ -375,8 +374,9 @@
         .set(sk('.sk-halo'), { opacity: 1 }, 3.2)
         .fromTo(sk('.sk-halo > *'), { opacity: 0, scale: 0.4, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.8, stagger: 0.1, ease: 'back.out(2)' }, 3.2);
 
-      // Depth: layers of the drawing shift slightly with the pointer
-      if (finePointer) {
+      // Depth: layers of the drawing shift with the pointer or a finger dragged across it,
+      // and with the phone's tilt where the browser allows it without a permission prompt.
+      {
         const layer = (sel, k) => { const xs = gsap.quickTo(sk(sel), 'x', { duration: 1, ease: 'power3.out' }); const ys = gsap.quickTo(sk(sel), 'y', { duration: 1, ease: 'power3.out' }); return (px, py) => { xs(px * k); ys(py * k * 0.6); }; };
         const layers = [layer('.sk-veg', 14), layer('.sk-dim, .sk-text', -6), layer('.sk-sheet', -10)];
         $('.hero__card').addEventListener('pointermove', (e) => {
@@ -385,6 +385,15 @@
           layers.forEach((f) => f(px, py));
         });
         $('.hero__card').addEventListener('pointerleave', () => layers.forEach((f) => f(0, 0)));
+        $('.hero__card').addEventListener('pointerup', () => layers.forEach((f) => f(0, 0)));
+        if (isPhone && 'DeviceOrientationEvent' in window && typeof DeviceOrientationEvent.requestPermission !== 'function') {
+          let heroVisible = true;
+          new IntersectionObserver((en) => { heroVisible = en[0].isIntersecting; }).observe($('.hero'));
+          window.addEventListener('deviceorientation', (e) => {
+            if (!heroVisible || e.gamma == null) return;
+            layers.forEach((f) => f(clamp(e.gamma / 45, -0.5, 0.5), clamp((e.beta - 45) / 60, -0.5, 0.5)));
+          }, { passive: true });
+        }
       }
     } else {
       tl.from('.hero__window', { clipPath: 'inset(100% 0% 0% 0%)', duration: 1.6, ease: 'expo.inOut' }, 0)
@@ -445,6 +454,11 @@
         .to(['.hero__bottom'], { y: -60, opacity: 0, duration: 0.6 }, 0.25)
         .to('.hero__scroll', { opacity: 0, duration: 0.2 }, 0);
       return () => frame && frame.setProgress(0);
+    });
+    mm.add('(max-width: 767px)', () => {
+      // Phones: the drawing folds back in 3D as you scroll past it
+      gsap.fromTo('.hero__mstage .hero__card', { rotateX: 0, scale: 1, transformPerspective: 900, transformOrigin: '50% 100%' },
+        { rotateX: 28, scale: 0.9, y: -20, ease: 'none', scrollTrigger: { trigger: '.hero__mstage', start: 'top 15%', end: 'bottom top', scrub: true } });
     });
     mm.add('(max-width: 1023px)', () => {
       gsap.to('.hero__img', { yPercent: 12, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
@@ -707,6 +721,14 @@
       if (bar) bar.style.setProperty('--p', ((best + 1) / workEls.length).toFixed(4));
       if (cur) cur.textContent = pad(best + 1);
       if (rail.scrollLeft > 20) rail.classList.add('is-scrolled');
+      if (motion) {
+        workEls.forEach((w) => {
+          const m = w.querySelector('.work__media'), r = w.getBoundingClientRect();
+          const d = clamp((r.left + r.width / 2 - (edge + r.width / 2)) / r.width, -1.5, 1.5);
+          m.style.transform = 'perspective(900px) rotateY(' + (-d * 24).toFixed(2) + 'deg) scale(' + (1 - Math.min(Math.abs(d), 1) * 0.08).toFixed(3) + ')';
+          m.style.transformOrigin = d > 0 ? '0% 50%' : '100% 50%';
+        });
+      }
     };
     const request = () => { if (!raf) raf = requestAnimationFrame(update); };
     rail.addEventListener('scroll', request, { passive: true });
@@ -1151,11 +1173,20 @@
         else if (e.key === 'z' || e.key === 'Z') { setZoom(!frame.classList.contains('is-zoomed'), 50, 50); }
         trapTab(el, e);
       });
-      el.addEventListener('touchstart', (e) => { touchX = e.changedTouches[0].clientX; }, { passive: true });
+      let touchY = null;
+      el.addEventListener('touchstart', (e) => { touchX = e.changedTouches[0].clientX; touchY = e.changedTouches[0].clientY; }, { passive: true });
+      el.addEventListener('touchmove', (e) => {
+        if (touchY === null || frame.classList.contains('is-zoomed') || !motion) return;
+        const dy = e.changedTouches[0].clientY - touchY, dx = e.changedTouches[0].clientX - touchX;
+        if (dy > 0 && Math.abs(dy) > Math.abs(dx)) gsap.set(im, { y: dy * 0.6, scale: 1 - Math.min(dy, 300) / 1500, opacity: 1 - Math.min(dy, 300) / 600 });
+      }, { passive: true });
       el.addEventListener('touchend', (e) => {
-        if (touchX === null || frame.classList.contains('is-zoomed')) { touchX = null; return; }
-        const dx = e.changedTouches[0].clientX - touchX; touchX = null;
-        if (Math.abs(dx) > 45) show(idx + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1);
+        if (touchX === null || frame.classList.contains('is-zoomed')) { touchX = null; touchY = null; return; }
+        const dx = e.changedTouches[0].clientX - touchX, dy = e.changedTouches[0].clientY - touchY;
+        touchX = null; touchY = null;
+        if (dy > 110 && Math.abs(dy) > Math.abs(dx)) { close(); if (motion) gsap.to(im, { y: 0, scale: 1, opacity: 1, delay: 0.4, duration: 0 }); return; }
+        if (motion) gsap.to(im, { y: 0, scale: 1, opacity: 1, duration: 0.4, ease: 'power3.out' });
+        if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) show(idx + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1);
       }, { passive: true });
       return { open };
     })();
@@ -1273,13 +1304,40 @@
     section.addEventListener('pointerleave', () => setPaused(false));
     section.addEventListener('focusin', () => setPaused(true));
     section.addEventListener('focusout', (e) => { if (!section.contains(e.relatedTarget)) setPaused(false); });
-    let tx = null;
-    stage.addEventListener('touchstart', (e) => { tx = e.changedTouches[0].clientX; }, { passive: true });
-    stage.addEventListener('touchend', (e) => {
-      if (tx === null) return;
-      const dx = e.changedTouches[0].clientX - tx; tx = null;
-      if (Math.abs(dx) > 45) go(i + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1);
-    }, { passive: true });
+    // Drag the card sideways: it follows the finger, tilts in 3D, and flings to the next review
+    let drag = null;
+    card.style.touchAction = 'pan-y';
+    card.addEventListener('pointerdown', (e) => {
+      if (e.target.closest('a, button')) return;
+      drag = { x: e.clientX, y: e.clientY, dx: 0, on: false };
+    });
+    card.addEventListener('pointermove', (e) => {
+      if (!drag) return;
+      const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+      if (!drag.on) {
+        if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
+        if (Math.abs(dy) > Math.abs(dx)) { drag = null; return; }
+        drag.on = true; setPaused(true);
+        try { card.setPointerCapture(e.pointerId); } catch (err) { /* noop */ }
+      }
+      drag.dx = dx;
+      if (motion) gsap.set(card, { x: dx, rotationY: dx * 0.06, rotationZ: dx * 0.012, transformPerspective: 1200 });
+    });
+    const release = () => {
+      if (!drag) return;
+      const { dx, on } = drag; drag = null;
+      if (!on) return;
+      const dir = dx < 0 ? 1 : -1;
+      if (Math.abs(dx) > 70) {
+        if (motion) {
+          gsap.to(card, { x: -dir * window.innerWidth * 0.6, rotationY: -dir * 18, opacity: 0, duration: 0.3, ease: 'power2.in',
+            onComplete: () => { go(i + dir, dir); gsap.fromTo(card, { x: dir * 80, rotationY: dir * 12, rotationZ: 0, opacity: 0 }, { x: 0, rotationY: 0, opacity: 1, duration: 0.7, ease: 'expo.out' }); } });
+        } else go(i + dir, dir);
+      } else if (motion) gsap.to(card, { x: 0, rotationY: 0, rotationZ: 0, duration: 0.6, ease: 'elastic.out(1, 0.6)' });
+      setPaused(false);
+    };
+    card.addEventListener('pointerup', release);
+    card.addEventListener('pointercancel', release);
     if ('IntersectionObserver' in window) {
       new IntersectionObserver((en) => { inView = en[0].isIntersecting; setPaused(paused); }, { threshold: 0.3 }).observe(section);
     }
@@ -1358,14 +1416,152 @@
     });
   }
 
+  /* ── Phones: hero drawing placement ──────────────────────────────────── */
+  // On phones the elevation drawing becomes the hero visual, so it moves into the
+  // content flow (under the eyebrow); on desktop it returns to the pinned frame.
+  function placeHeroCard() {
+    const card = $('.hero__card'), stage = $('.hero__mstage'), win = $('.hero__window');
+    if (!card || !stage || !win) return;
+    const mq = window.matchMedia('(max-width: 767px)');
+    const apply = () => {
+      if (mq.matches && card.parentElement !== stage) stage.appendChild(card);
+      else if (!mq.matches && card.parentElement === stage) win.after(card);
+    };
+    apply();
+    if (mq.addEventListener) mq.addEventListener('change', () => { apply(); if (hasGsap) ScrollTrigger.refresh(); });
+  }
+
+  /* ── Interactive 3D massing model (Services) ─────────────────────────── */
+  function model() {
+    const c = $('.model__canvas');
+    if (!c || !window.House3D) return;
+    new window.House3D(c, { reduced: !motion });
+    if (motion) {
+      gsap.from('.model__tick', { scale: 0, duration: 0.8, stagger: 0.12, ease: 'back.out(3)', scrollTrigger: { trigger: '.model', start: 'top 85%', once: true } });
+      gsap.fromTo('.model__hint svg', { x: -6 }, { x: 6, duration: 0.9, repeat: 5, yoyo: true, ease: 'sine.inOut', scrollTrigger: { trigger: '.model', start: 'top 70%', once: true } });
+    }
+  }
+
+  /* ── Crane caricature: builds the house block by block (Contact) ─────── */
+  function crane() {
+    const fig = $('.build'), svg = $('.build__svg');
+    if (!fig || !svg) return;
+    const NS = 'http://www.w3.org/2000/svg';
+    const el = (tag, attrs, parent) => { const n = document.createElementNS(NS, tag); Object.keys(attrs).forEach((k) => n.setAttribute(k, attrs[k])); (parent || svg).appendChild(n); return n; };
+
+    // static scene: sun, ground, crane
+    const sun = el('circle', { class: 'b-sun', cx: 300, cy: 46, r: 16 });
+    el('path', { class: 'b-ground', d: 'M0 238 H360 M0 246 H360' });
+    let lattice = 'M50 238 V52 M62 238 V52';
+    for (let y = 238; y > 58; y -= 14) lattice += ' M50 ' + y + ' L62 ' + (y - 14) + ' M62 ' + y + ' L50 ' + (y - 14);
+    el('path', { class: 'b-crane', d: lattice });
+    let jib = 'M18 40 H332 M40 46 H332 M18 40 V46 H40';
+    for (let x = 64; x < 330; x += 14) jib += ' M' + x + ' 46 L' + (x + 7) + ' 40 L' + (x + 14) + ' 46';
+    el('path', { class: 'b-crane', d: jib });
+    el('path', { class: 'b-crane', d: 'M56 40 V16 M56 16 L20 40 M56 16 L330 40' });
+    el('rect', { class: 'b-crane b-cab', x: 44, y: 46, width: 24, height: 14 });
+    el('rect', { class: 'b-weight', x: 20, y: 46, width: 18, height: 16 });
+
+    // house blocks, drawn at their final positions
+    const blocks = [
+      { x: 190, y: 196, w: 124, h: 42, win: [[200, 206, 16, 30], [226, 212, 24, 16], [268, 206, 36, 32]] },   // ground floor
+      { x: 196, y: 150, w: 100, h: 46, win: [[248, 158, 38, 30], [206, 172, 30, 14]] },                       // balcony box
+      { x: 184, y: 140, w: 124, h: 10, win: [] },                                                              // roof slab
+      { x: 314, y: 104, w: 10, h: 134, win: [] },                                                              // fin
+    ];
+    const lights = [];
+    blocks.forEach((b) => {
+      const g = el('g', { class: 'b-block' });
+      el('rect', { class: 'b-body', x: b.x, y: b.y, width: b.w, height: b.h }, g);
+      b.win.forEach((w) => { el('rect', { class: 'b-win', x: w[0], y: w[1], width: w[2], height: w[3] }, g); lights.push(el('rect', { class: 'b-light', x: w[0] + 1, y: w[1] + 1, width: w[2] - 2, height: w[3] - 2 }, g)); });
+      b.g = g; b.cx = b.x + b.w / 2;
+    });
+    const trolley = el('rect', { class: 'b-trolley', x: -7, y: 46, width: 14, height: 6 });
+    const cable = el('line', { class: 'b-cable', x1: 0, y1: 52, x2: 0, y2: 70 });
+    const hook = el('path', { class: 'b-hook', d: 'M0 0 V6 Q0 11 -5 9' });
+
+    const PICK_X = 112, TOP_REST = 70;
+    const P = { tx: PICK_X, hy: TOP_REST, step: 0, carry: 0 };
+    const render = () => {
+      trolley.setAttribute('transform', 'translate(' + P.tx + ',0)');
+      cable.setAttribute('x1', P.tx); cable.setAttribute('x2', P.tx); cable.setAttribute('y2', P.hy);
+      hook.setAttribute('transform', 'translate(' + P.tx + ',' + P.hy + ')');
+      blocks.forEach((b, j) => {
+        let dx = 0, dy = 0, op = 1;
+        if (j > P.step) op = 0;
+        else if (j === P.step && P.step < blocks.length) {
+          if (P.carry) { dx = P.tx - b.cx; dy = P.hy + 10 - b.y; }
+          else { dx = PICK_X - b.cx; dy = 238 - b.h - b.y; }
+        }
+        b.g.setAttribute('transform', 'translate(' + dx + ',' + dy + ')');
+        b.g.style.opacity = op;
+      });
+    };
+
+    if (!motion) { P.step = blocks.length; render(); lights.forEach((l) => { l.style.opacity = 1; }); fig.classList.add('is-static'); return; }
+
+    const tl = gsap.timeline({ paused: true, onUpdate: render, defaults: { ease: 'power2.inOut' } });
+    tl.set(sun, { attr: { cy: 46 }, opacity: 1 }, 0);
+    blocks.forEach((b, j) => {
+      tl.set(P, { step: j, carry: 0 })
+        .to(P, { tx: PICK_X, hy: 238 - b.h - 10, duration: 0.5 })      // lower to the waiting block
+        .set(P, { carry: 1 })
+        .to(P, { hy: 64 - b.h * 0.2, duration: 0.55 })                  // lift
+        .to(P, { tx: b.cx, duration: 0.7 })                             // travel along the jib
+        .to(P, { hy: b.y - 10, duration: 0.55, ease: 'power3.out' })     // set it down
+        .set(P, { step: j + 1, carry: 0 })
+        .to(P, { hy: TOP_REST, duration: 0.35 });
+    });
+    tl.to(sun, { attr: { cy: 232 }, opacity: 0.2, duration: tl.duration(), ease: 'none' }, 0)   // sun sets as the house goes up
+      .fromTo(lights, { opacity: 0 }, { opacity: 1, duration: 0.4, stagger: 0.2, ease: 'power1.out' })
+      .to(P, { tx: PICK_X, duration: 0.6 }, '<');
+    render();
+
+    tl.timeScale(1.6);
+    ScrollTrigger.create({ trigger: fig, start: 'top 80%', once: true, onEnter: () => tl.play(0) });
+    fig.addEventListener('click', () => { if (!tl.isActive()) { lights.forEach((l) => { l.style.opacity = 0; }); tl.play(0); } });
+  }
+
+  /* ── Phones: quick-action dock ────────────────────────────────────────── */
+  function dock() {
+    const d = $('.mdock');
+    if (!d) return;
+    let pastHero = false, nearEnd = false;
+    const sync = () => d.classList.toggle('is-visible', pastHero && !nearEnd && !html.classList.contains('is-locked'));
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver((en) => { pastHero = !en[0].isIntersecting; sync(); }, { rootMargin: '0px 0px -40% 0px' }).observe($('.hero'));
+      const endIo = new IntersectionObserver((en) => { nearEnd = en.some((x) => x.isIntersecting); sync(); }, { threshold: 0 });
+      endIo.observe($('.contact .contact__grid-info')); endIo.observe($('.footer'));
+    }
+    new MutationObserver(sync).observe(html, { attributes: true, attributeFilter: ['class'] });
+  }
+
+  /* ── Touch: the drafting lamp in "Our Story" follows a finger too ──────── */
+  function lampTouch() {
+    const section = $('.about');
+    if (!section || !motion) return;
+    let t = 0;
+    section.addEventListener('touchmove', (e) => {
+      const r = section.getBoundingClientRect(), p = e.touches[0];
+      section.style.setProperty('--mx', (p.clientX - r.left) + 'px');
+      section.style.setProperty('--my', (p.clientY - r.top) + 'px');
+      section.classList.add('is-lamp');
+      clearTimeout(t); t = setTimeout(() => section.classList.remove('is-lamp'), 900);
+    }, { passive: true });
+  }
+
   /* ── Boot ────────────────────────────────────────────────────────────── */
   function boot() {
+    placeHeroCard();
+    dock();
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitBrand);
     if (!motion) {
       services();
       gallery();
       cursor();
       testimonials();
+      model();
+      crane();
       fitBrand();
       $$('[data-split]').forEach((el) => el.classList.add('is-split'));
       runIntro(() => {});
@@ -1399,6 +1595,9 @@
       about();
       works();
       testimonials();
+      model();
+      crane();
+      lampTouch();
       finale();
       ScrollTrigger.refresh();
       setupDone = true;

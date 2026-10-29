@@ -1243,3 +1243,84 @@ html.has-st { scroll-behavior: auto; }
 .js:not(.reduced):not(.no-motion) .hero__sketch .sk-draw * { stroke-dasharray: 1; stroke-dashoffset: 1; }
 .js:not(.reduced):not(.no-motion) .hero__sketch :is(.sk-text, .sk-hatch, .sk-light, .sk-halo, .sk-sheet) { opacity: 0; }
 .js:not(.reduced):not(.no-motion):not(.hero-in) .hero__card { visibility: hidden; }
+
+/* ── Phones: hero drawing as the hero visual ───────────────────────────── */
+.hero__mstage { display: none; }
+@media (max-width: 767px) {
+  .hero__pin { height: auto; min-height: 100svh; }
+  .hero__content { position: relative; inset: auto; display: flex; flex-direction: column; min-height: 100svh; gap: 14px; padding-top: calc(var(--nav-h) + 12px); }
+  .hero__eyebrow { margin-top: 0; }
+  .hero .hero__mdim { display: none; }
+  .hero__mstage { display: block; margin: 2px 0 8px; perspective: 900px; }
+  .hero__mstage .hero__card { display: block; position: relative; inset: auto; width: 100%; aspect-ratio: 600 / 500; touch-action: pan-y; }
+  .hero__mstage .hero__sketch { inset: 3% 3% 2%; width: 94%; height: 95%; }
+  .hero__frame { opacity: .45; }
+  .hero__brand { align-self: flex-start; }
+  .hero__bottom { margin-top: auto; }
+}
+
+/* ── Interactive 3D model (Services) ───────────────────────────────────── */
+.model {
+  position: relative; margin: 0 0 clamp(40px, 6vw, 72px); height: clamp(300px, 80vw, 440px);
+  background: radial-gradient(120% 90% at 50% 45%, #1f1d18 0%, #121110 72%);
+  border: 1px solid rgba(201,169,58,.25); overflow: hidden;
+}
+.model::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .5;
+  background-image: linear-gradient(rgba(201,169,58,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(201,169,58,.07) 1px, transparent 1px);
+  background-size: 22px 22px; }
+.model__canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: grab; outline: none; }
+.model__canvas:active { cursor: grabbing; }
+.model__canvas:focus-visible { box-shadow: inset 0 0 0 2px var(--gold-bright); }
+.model__tick { position: absolute; width: 20px; height: 20px; border: solid var(--gold-bright); pointer-events: none; }
+.model__tick--tl { top: 8px; left: 8px; border-width: 1.5px 0 0 1.5px; }
+.model__tick--br { right: 8px; bottom: 8px; border-width: 0 1.5px 1.5px 0; }
+.model__cap { position: absolute; left: 18px; right: 18px; top: 14px; display: flex; justify-content: space-between; gap: 12px; color: var(--concrete); pointer-events: none; }
+.model__hint { display: inline-flex; align-items: center; gap: 8px; color: var(--gold); }
+.model__hint svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+@media (max-width: 767px) { .model__cap { flex-direction: column; gap: 4px; } }
+
+/* ── Crane caricature (Contact) ────────────────────────────────────────── */
+.build { margin: calc(clamp(60px, 9vw, 130px) * -0.45) 0 clamp(48px, 7vw, 90px); max-width: 620px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.no-js .build { display: none; }
+.build__svg { display: block; width: 100%; height: auto; overflow: visible; }
+.b-ground { fill: none; stroke: rgba(243,239,230,.3); stroke-width: 1; }
+.b-crane { fill: none; stroke: var(--gold); stroke-width: 1; stroke-linejoin: round; }
+.b-cab { fill: rgba(201,169,58,.18); }
+.b-weight { fill: rgba(201,169,58,.35); stroke: var(--gold); stroke-width: 1; }
+.b-body { fill: rgba(243,239,230,.05); stroke: rgba(243,239,230,.85); stroke-width: 1.2; }
+.b-win { fill: none; stroke: rgba(243,239,230,.5); stroke-width: .8; }
+.b-light { fill: #f2b85a; opacity: 0; filter: drop-shadow(0 0 5px rgba(255,190,90,.9)); }
+.b-trolley { fill: var(--gold-bright); }
+.b-cable { stroke: rgba(243,239,230,.65); stroke-width: .8; }
+.b-hook { fill: none; stroke: var(--paper); stroke-width: 1.4; stroke-linecap: round; }
+.b-sun { fill: #f0b45a; filter: drop-shadow(0 0 10px rgba(240,180,90,.7)); }
+.build__cap { display: block; margin-top: 12px; color: var(--concrete); }
+.build__replay { color: var(--gold); }
+.build.is-static .build__replay { display: none; }
+
+/* ── Phones: quick-action dock ─────────────────────────────────────────── */
+.mdock {
+  position: fixed; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); z-index: 65;
+  display: none; grid-template-columns: 1fr 1.2fr 1.3fr; gap: 6px; padding: 6px;
+  background: rgba(13,13,12,.84); -webkit-backdrop-filter: blur(14px) saturate(1.2); backdrop-filter: blur(14px) saturate(1.2);
+  border: 1px solid rgba(201,169,58,.32); border-radius: 6px; box-shadow: 0 18px 40px -16px rgba(0,0,0,.6);
+  transform: translateY(150%); transition: transform .6s var(--ease-out);
+}
+.mdock.is-visible { transform: none; }
+@media (max-width: 767px) { .mdock { display: grid; } }
+.mdock__btn {
+  display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; border-radius: 4px;
+  color: var(--paper); font-family: var(--ff-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  transition: transform .2s, background .3s;
+}
+.mdock__btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.mdock__btn:active { transform: scale(.95); background: rgba(243,239,230,.08); }
+.mdock__btn--cta { background: var(--gold-bright); color: var(--ink); }
+.mdock__btn--cta:active { background: var(--gold); }
+
+/* ── Touch feedback ────────────────────────────────────────────────────── */
+@media (hover: none) {
+  .gtile:active img { transform: scale(1.05); }
+  .btn:active, .gexpand:active, .vbtn:active { transform: scale(.97); }
+  .work__media { transition: transform .35s var(--ease-out); }
+}
