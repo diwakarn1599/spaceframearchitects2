@@ -1,4 +1,4 @@
-# Space Frame Architects — Premium Redesign
+# Space Frame Architects
 
 Hosted Url - https://diwakarn1599.github.io/spaceframearchitects2/
 
