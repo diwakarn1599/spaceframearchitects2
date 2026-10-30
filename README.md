@@ -120,6 +120,14 @@ tools/serve.ps1         Tiny static server for Windows
 - **Our Work:** a swipeable snap rail with the next project peeking in. The project in view is highlighted, with a progress line, a counter and a "Swipe" hint. This replaces six full-height stacked blocks.
 - **Gallery:** smaller section titles, and the two tabs sit in equal columns with the photo count under each name.
 
+## Search (SEO)
+
+- **Head tags:** a descriptive title and meta description, a canonical URL (`https://spaceframearchitects.in/`), Open Graph and Twitter cards with an absolute share image, `en-IN` language and geo tags.
+- **Main heading:** "Space Frame Architects" is the page's single `<h1>`.
+- **Business data:** JSON-LD `HomeAndConstructionBusiness` with the name, logo, phones, email, Ambattur / Chennai address, opening hours, services and Instagram, all taken from the site's existing content. No ratings or reviews are marked up.
+- **Crawl files:** `robots.txt` and `sitemap.xml` (with the project images). Update `<lastmod>` in the sitemap when content changes.
+- **Icons:** `assets/logo/logo-512.png` (the logo for search engines) and `assets/logo/apple-touch-icon.png`.
+
 ## Accessibility & performance
 
 - `prefers-reduced-motion` turns off the intro, pinning, horizontal scroll, parallax and

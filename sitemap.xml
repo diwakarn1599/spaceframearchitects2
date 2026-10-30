@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://spaceframearchitects.in/</loc>
+    <lastmod>2026-10-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+    <image:image><image:loc>https://spaceframearchitects.in/assets/img/works/opt-3-1920.jpg</image:loc></image:image>
+    <image:image><image:loc>https://spaceframearchitects.in/assets/img/works/satish-1920.jpg</image:loc></image:image>
+    <image:image><image:loc>https://spaceframearchitects.in/assets/img/works/joseph-1920.jpg</image:loc></image:image>
+    <image:image><image:loc>https://spaceframearchitects.in/assets/img/works/suresh-1920.jpg</image:loc></image:image>
+    <image:image><image:loc>https://spaceframearchitects.in/assets/img/works/vinoth-1920.jpg</image:loc></image:image>
+    <image:image><image:loc>https://spaceframearchitects.in/assets/img/works/yuvaraj-1920.jpg</image:loc></image:image>
+    <image:image><image:loc>https://spaceframearchitects.in/assets/img/works/porselvan-1920.jpg</image:loc></image:image>
+  </url>
+</urlset>
